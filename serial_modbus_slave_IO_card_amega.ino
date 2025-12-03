@@ -20,7 +20,7 @@
     ----------------------------------
     |  Slave ID          |       1   |
     |  Bauds             |  115200   |
-    |  Parity            |    EVEN   |
+    |  Parity            |    NONE   |
     |  Num of bits       |       8   |
     |  Num of stop bits  |       1   |
     ----------------------------------
@@ -54,12 +54,7 @@ const byte SlaveId = 1;
 const unsigned long BaudRate = 115200;
 
 // IO map (arduino pin <-> modbus register)
-struct ioMap
-{
-    int pin;
-    int reg;
-};
-
+struct ioMap { int pin; int reg; };
 ioMap servoOutput[]   = { {10,10}, {11,11} };
 ioMap analogInput[]   = { {A0, 0}, {A1, 1}, {A2, 2}, {A3, 3}, {A4, 4}, {A5, 5}, {A6, 6}, {A7, 7} };
 ioMap analogOutput[]  = { { 2, 0}, { 3, 1}, { 4, 2}, { 5, 3}, { 6, 4}, { 7, 5}, { 8, 6}, { 9, 7} };
@@ -79,7 +74,7 @@ ModbusSerial mb(MySerial, SlaveId, TxenPin);
 //  setup the modbus serial object & I/O registers
 void setup_modbus()
 {
-  MySerial.begin(BaudRate, MB_PARITY_EVEN); // 8 bits, even parity, 1 stop bit
+  MySerial.begin(BaudRate); // 8 bits, none parity, 1 stop bit
   while(!MySerial);
 
   mb.config(BaudRate);
@@ -166,3 +161,4 @@ void loop()
   for(int i = 0; i < 2; i++)
     servoWrite(i);
 }
+
