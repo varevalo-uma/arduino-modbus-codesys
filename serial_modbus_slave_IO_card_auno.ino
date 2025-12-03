@@ -14,7 +14,7 @@
     |  Slave ID          |       1   |
     |  Bauds             |  115200   |
     |  Num of bits       |       8   |
-    |  Parity            |    EVEN   |
+    |  Parity            |    NONE   |
     |  Num of stop bits  |       1   |
     ----------------------------------
 
@@ -41,12 +41,9 @@ const unsigned long BaudRate = 115200;
 const int TxenPin = -1; // -1 disables the feature, change that if you are using an RS485 driver, this pin would be connected to the DE and /RE pins of the driver.
 
 // IO map (arduino pin <-> modbus register)
-struct ioMap {
-  int reg;
-  int pin;
-};
+struct ioMap { int reg; int pin; };
 ioMap digitalInput[]  = { {0, A0}, {1, A1}, {2, A2}, {3, A3}, {4, A4}, {5, A5} };
-ioMap digitalOutput[] = { {0, 8}, {1, 9}, {2, 10}, {3, 11}, {4, 12}, {5, 13} };
+ioMap digitalOutput[] = { {0,  8}, {1,  9}, {2, 10}, {3, 11}, {4, 12}, {5, 13} };
 
 // modbus master communication
 #define MySerial Serial // define serial port used, Serial most of the time, or Serial1, Serial2 ... if it is available
@@ -57,7 +54,7 @@ ModbusSerial Modbus(MySerial, SlaveId, TxenPin);
 //  setup the modbus serial object & I/O registers
 void setup_modbus()
 {
-  MySerial.begin(BaudRate, MB_PARITY_EVEN); // 8 bits, even parity, 1 stop bit
+  MySerial.begin(BaudRate); // 8 bits, none parity, 1 stop bit
   while (!MySerial);
 
   Modbus.config(BaudRate);
@@ -111,3 +108,4 @@ void loop()
     myDigitalRead(i);
   }
 }
+
